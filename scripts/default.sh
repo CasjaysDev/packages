@@ -351,7 +351,6 @@ install_pkg openssh-server
 install_pkg openssl
 install_pkg openssl-libs
 install_pkg os-prober
-install_pkg ostree
 install_pkg p11-kit
 install_pkg p11-kit-trust
 install_pkg PackageKit
@@ -597,7 +596,6 @@ install_pkg php-mbstring
 install_pkg php-mysqlnd
 install_pkg php-pdo
 install_pkg php-pecl-geoip
-install_pkg php-pecl-jsonc
 install_pkg php-pecl-zendopcache
 install_pkg php-pgsql
 install_pkg php-xml
@@ -626,7 +624,6 @@ install_pkg python2-certbot-apache
 install_pkg python2-certbot-dns-rfc2136
 install_pkg python2-configargparse
 install_pkg python2-cryptography
-install_pkg python2-dialog
 install_pkg python2-enum34
 install_pkg python2-funcsigs
 install_pkg python2-future
