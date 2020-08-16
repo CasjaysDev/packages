@@ -49,8 +49,9 @@ disable_selinux() { selinuxenabled; devnull setenforce 0 ;}
 grab_remote_file() { urlverify "$1" && curl -sSLq "$@" || exit 1 ;}
 run_external() { printf_green "Executing $*" devnull "$*" ;}
 retrieve_version_file() { grab_remote_file https://github.com/casjay-base/centos/raw/master/version.txt | head -n1 || echo "Unknown version" ;}
-for_loop() { loopit="$1"; shift 1 ; for loop in "$loopit"; do "$@" ; done ;}
 run_grub() { printf_green "Setting up grub"; rm -Rf /boot/*rescue* ; devnull grub2-mkconfig -o /boot/grub2/grub.cfg ;}
+
+run_loop() { loopit="$1"; shift 1; for loop in "$loopit"; do $@; done ; return 0 ;}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -112,7 +113,7 @@ run_external timedatectl set-timezone America/New_York
 
 install_pkg cronie-noanacron
 
-for_loop "$(echo cronie-anacron sendmail sendmail-cf)" rpm -ev --nodeps $loop
+run_loop "$(echo cronie-anacron sendmail sendmail-cf)" rpm -ev --nodeps $loop
 
 run_external rm -Rf /root/anaconda-ks.cfg /var/log/anaconda
 run_external rm -Rf /etc/yum.repos.d/*
