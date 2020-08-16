@@ -735,7 +735,6 @@ install_pkg vim-filesystem
 install_pkg vim-minimal
 install_pkg vnstat
 install_pkg webalizer
-install_pkg webmin
 install_pkg wget
 install_pkg which
 install_pkg wpa_supplicant
