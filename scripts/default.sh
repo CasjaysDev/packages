@@ -44,10 +44,10 @@ remove_pkg() { if ! test_pkg "$1" ; then execute "yum remove -q -y $1" "Removing
 install_pkg() { if test_pkg "$1" ; then execute "yum install -q -y --skip-broken install $1" "Installing: $1" ; fi ; setexitstatus ; set --  ;}
 
 detect_selinux() { selinuxenabled; if [ $? -ne 0 ]; then return 0; else return 1 ; fi ;}
-disable_selinux() { selinuxenabled; setenforce 0 ;}
+disable_selinux() { selinuxenabled; devnull setenforce 0 ;}
 
-grab_remote_file() { urlverify "$1" && curl -sSL "$@" || exit 1 ;}
-run_external() { printf_green "Executing $@" "$@" ;}
+grab_remote_file() { urlverify "$1" && curl -sSLq "$@" || exit 1 ;}
+run_external() { printf_green "Executing $@" devnull "$@" ;}
 retrieve_version_file() { grab_remote_file https://github.com/casjay-base/centos/raw/master/version.txt | head -n1 || echo "Unknown version" ;}
 for_loop() { loop="$1"; shift 1 ; for loop in "$loop"; do "$@" ; done ;}
 run_grub() { printf_green "Setting up grub"; rm -Rf /boot/*rescue* ; grub2-mkconfig -o /boot/grub2/grub.cfg ;}
@@ -82,11 +82,11 @@ printf_head "Configuring the system"
 
 printf_info "Installer version: $(retrieve_version_file)"
 
-run_externel "yum clean all"
+run_external "yum clean all"
 
-run_externel mkdir -p /etc/casjaysdev/updates/versions
-run_externel echo "$VERSION" >/etc/casjaysdev/updates/versions/configs.txt
-run_externel chmod -Rf 664 /etc/casjaysdev/updates/versions/configs.txt
+run_external mkdir -p /etc/casjaysdev/updates/versions
+run_external echo "$VERSION" >/etc/casjaysdev/updates/versions/configs.txt
+run_external chmod -Rf 664 /etc/casjaysdev/updates/versions/configs.txt
 run_external rm -Rf /etc/yum.repos.d/*
 grab_remote_file https://rpm-devel.sourceforge.io/ZREPO/RHEL/7/casjay.repo -o /etc/yum.repos.d/casjay.repo
 
