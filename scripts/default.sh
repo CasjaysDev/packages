@@ -47,7 +47,8 @@ detect_selinux() { selinuxenabled; if [ $? -ne 0 ]; then return 0; else return 1
 disable_selinux() { selinuxenabled; devnull setenforce 0 ;}
 
 grab_remote_file() { urlverify "$1" && curl -sSLq "$@" || exit 1 ;}
-run_external() { printf_green "Executing $*" "$@" >/dev/null 2>&1 ;}
+run_external() { printf_green "Executing $*" && "$@" >/dev/null 2>&1 ;}
+
 retrieve_version_file() { grab_remote_file https://github.com/casjay-base/centos/raw/master/version.txt | head -n1 || echo "Unknown version" ;}
 run_grub() { printf_green "Setting up grub"; rm -Rf /boot/*rescue* ; devnull grub2-mkconfig -o /boot/grub2/grub.cfg ;}
 
@@ -67,6 +68,12 @@ disable_selinux
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ##################################################################################################################
+printf_head "Initializing the installer"
+##################################################################################################################
+
+printf_info "Installer version: $(retrieve_version_file)"
+
+##################################################################################################################
 printf_head "Configuring cores for compiling"
 ##################################################################################################################
 
@@ -83,8 +90,6 @@ fi
 ##################################################################################################################
 printf_head "Configuring the system"
 ##################################################################################################################
-
-printf_info "Installer version: $(retrieve_version_file)"
 
 run_external "yum clean all"
 
@@ -898,9 +903,9 @@ history -c && history -w
 
 ##################################################################################################################
 
-run_external mkdir -p /etc/casjaysdev/updates/versions
-run_external echo "$VERSION" >/etc/casjaysdev/updates/versions/configs.txt
-run_external chmod -Rf 664 /etc/casjaysdev/updates/versions/configs.txt
+mkdir -p /etc/casjaysdev/updates/versions
+echo "$VERSION" > /etc/casjaysdev/updates/versions/configs.txt
+chmod -Rf 664 /etc/casjaysdev/updates/versions/configs.txt
 
 ##################################################################################################################
 printf_head "Finished " ; echo""
