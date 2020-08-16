@@ -120,7 +120,8 @@ run_external rm -Rf /root/anaconda-ks.cfg /var/log/anaconda
 run_external rm -Rf /etc/yum.repos.d/*
 grab_remote_file https://rpm-devel.sourceforge.io/ZREPO/RHEL/7/casjay.repo -o /etc/yum.repos.d/casjay.repo
 
-run_external yum clean all && yum update -q -y --skip-broken
+run_external yum clean all 
+run_external yum update -q -y --skip-broken
 run_grub
 
 ##################################################################################################################
