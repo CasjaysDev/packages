@@ -50,6 +50,7 @@ grab_remote_file() { urlverify "$1" && curl -sSL "$@" || exit 1 ;}
 run_external() { printf_green "Executing $@" "$@" ;}
 retrieve_version_file() { grab_remote_file https://github.com/casjay-base/centos/raw/master/version.txt | head -n1 || echo "Unknown version" ;}
 for_loop() { loop="$1"; shift 1 ; for loop in "$loop"; do "$@" ; done ;}
+run_grub() { printf_green "Setting up grub"; rm -Rf /boot/*rescue* ; grub2-mkconfig -o /boot/grub2/grub.cfg ;}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -105,8 +106,7 @@ run_external rm -Rf /etc/yum.repos.d/*
 grab_remote_file curl -sSL https://rpm-devel.sourceforge.io/ZREPO/RHEL/7/casjay.repo -o /etc/yum.repos.d/casjay.repo
 
 run_external yum clean all && yum update -q -y --skip-broken
-run_external rm -Rf /boot/*rescue*
-run_external grub2-mkconfig -o /boot/grub2/grub.cfg
+run_grub
 
 ##################################################################################################################
 printf_head "Installing the packages for my default server"
@@ -795,6 +795,7 @@ install_pkg zlib
 printf_head "Fixing packages"
 ##################################################################################################################
 
+run_grub
 
 ##################################################################################################################
 printf_head "setting up config files"
@@ -820,8 +821,6 @@ printf_head "Enabling services"
 #system_service_disable mpd
 
 #run_post "devnull systemctl set-default multi-user.target"
-
-#run_post "devnull grub-mkconfig -o /boot/grub/grub.cfg"
 
 ##################################################################################################################
 printf_head "Cleaning up"
