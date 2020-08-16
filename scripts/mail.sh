@@ -185,7 +185,6 @@ install_pkg clamav-data
 install_pkg clamav-devel
 install_pkg clamav-filesystem
 install_pkg clamav-lib
-install_pkg clamav-scanner
 install_pkg clamav-scanner-systemd
 install_pkg clamav-server
 install_pkg clamav-server-systemd
