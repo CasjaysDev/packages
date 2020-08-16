@@ -110,7 +110,7 @@ run_external rm -Rf /tmp/dotfiles
 run_external timedatectl set-timezone America/New_York
 
 install_pkg cronie-noanacron
-run_external for rpms in $(echo cronie-anacron sendmail sendmail-cf); do rpm -ev --nodeps $rpms; done
+for rpms in $(echo cronie-anacron sendmail sendmail-cf); do devnull rpm -ev --nodeps $rpms; done
 
 run_external rm -Rf /root/anaconda-ks.cfg /var/log/anaconda
 run_external rm -Rf /etc/yum.repos.d/*
