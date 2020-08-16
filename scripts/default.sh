@@ -161,7 +161,6 @@ install_pkg chrony
 install_pkg cifs-utils
 install_pkg cockpit
 install_pkg cockpit-bridge
-install_pkg cockpit-pcp
 install_pkg cockpit-system
 install_pkg cockpit-ws
 install_pkg composer
