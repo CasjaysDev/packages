@@ -241,7 +241,6 @@ install_pkg gdk-pixbuf2
 install_pkg gd-last
 install_pkg GeoIP
 install_pkg GeoIP-data
-install_pkg GeoIP-update
 install_pkg gettext
 install_pkg gettext-libs
 install_pkg git
