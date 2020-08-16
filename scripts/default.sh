@@ -40,13 +40,13 @@ system_service_enable() { if system_service_exists ; then execute "systemctl ena
 system_service_disable() { if system_service_exists ; then execute "systemctl disable --now $1" "Disabling service: $1" ; fi ; setexitstatus ; set --;}
 
 test_pkg() { devnull rpm -q $1 && printf_blue "$1 is installed" && return 1 || return 0 ; setexitstatus ; set -- ;}
-remove_pkg() { if ! test_pkg "$1" ; then execute "yum remove -q -y $1" "Removing: $1" ; fi ; setexitstatus ; set -- ;}
-install_pkg() { if test_pkg "$1" ; then execute "yum install -q -y --skip-broken install $1" "Installing: $1" ; fi ; setexitstatus ; set --  ;}
+remove_pkg() { if ! test_pkg "$1" ; then execute "yum remove -q -y $@" "Removing: $@" ; fi ; setexitstatus ; set -- ;}
+install_pkg() { if test_pkg "$1" ; then execute "yum install -q -y --skip-broken $@" "Installing: $@" ; fi ; setexitstatus ; set --  ;}
 
 detect_selinux() { selinuxenabled; if [ $? -ne 0 ]; then return 0; else return 1 ; fi ;}
 disable_selinux() { selinuxenabled; devnull setenforce 0 ;}
 
-grab_remote_file() { urlverify "$1" && curl -sSLq "$*" || exit 1 ;}
+grab_remote_file() { urlverify "$1" && curl -sSLq "$@" || exit 1 ;}
 run_external() { printf_green "Executing $*" devnull "$*" ;}
 retrieve_version_file() { grab_remote_file https://github.com/casjay-base/centos/raw/master/version.txt | head -n1 || echo "Unknown version" ;}
 for_loop() { loop="$1"; shift 1 ; for loop in "$loop"; do "$*" ; done ;}
@@ -90,9 +90,22 @@ run_external chmod -Rf 664 /etc/casjaysdev/updates/versions/configs.txt
 run_external rm -Rf /etc/yum.repos.d/*
 grab_remote_file https://rpm-devel.sourceforge.io/ZREPO/RHEL/7/casjay.repo -o /etc/yum.repos.d/casjay.repo
 
-run_external yum clean all && yum update -q -y --skip-broken
+run_external yum clean all 
+run_external yum update -q -y --skip-broken
+
 install_pkg vnstat
 system_service_enable vnstat
+
+install_pkg net-tools 
+install_pkg wget
+install_pkg curl
+install_pkg git
+install_pkg nail
+install_pkg e2fsprogs
+install_pkg redhat-lsb
+install_pkg neovim
+install_pkg wget
+install_pkg unzip
 
 run_external rm -Rf /tmp/dotfiles
 run_external timedatectl set-timezone America/New_York
