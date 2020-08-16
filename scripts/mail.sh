@@ -635,9 +635,6 @@ install_pkg python2-mock
 install_pkg python2-psutil
 install_pkg python2-pyasn1
 install_pkg python2-pyrfc3339
-install_pkg python3-acme
-install_pkg python3-certbot
-install_pkg python3-certbot-apache
 install_pkg python-augeas
 install_pkg python-backports
 install_pkg python-backports-ssl_match_hostname
