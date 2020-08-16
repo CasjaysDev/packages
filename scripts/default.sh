@@ -51,8 +51,6 @@ run_external() { printf_green "Executing $*" devnull "$*" ;}
 retrieve_version_file() { grab_remote_file https://github.com/casjay-base/centos/raw/master/version.txt | head -n1 || echo "Unknown version" ;}
 run_grub() { printf_green "Setting up grub"; rm -Rf /boot/*rescue* ; devnull grub2-mkconfig -o /boot/grub2/grub.cfg ;}
 
-run_loop() { loopit="$1"; shift 1; for loop in "$loopit"; do $@; done ; return 0 ;}
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 [ ! -z "$1" ] && printf_exit 'To many options provided'
@@ -112,8 +110,7 @@ run_external rm -Rf /tmp/dotfiles
 run_external timedatectl set-timezone America/New_York
 
 install_pkg cronie-noanacron
-
-run_loop "$(echo cronie-anacron sendmail sendmail-cf)" rpm -ev --nodeps $loop
+run_external for rpms in $(echo cronie-anacron sendmail sendmail-cf); do rpm -ev --nodeps $rpms; done
 
 run_external rm -Rf /root/anaconda-ks.cfg /var/log/anaconda
 run_external rm -Rf /etc/yum.repos.d/*
