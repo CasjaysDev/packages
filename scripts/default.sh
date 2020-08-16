@@ -37,20 +37,20 @@ fi
 run_post() { local e="$1" ; local m="$(echo $1 | sed 's#devnull ##g')" ; execute "$e" "executing: $m" ; setexitstatus ; set -- ;}
 system_service_exists() { if systemctl list-units --full -all | grep -Fq "$1" ; then return 0 ; else return 1 ; fi ; setexitstatus ; set -- ;}
 system_service_enable() { if system_service_exists ; then execute "systemctl enable --now -f $1" "Enabling service: $1" ; fi ; setexitstatus ; set -- ;}
-system_service_disable() { if system_service_exists ; then execute "systemctl disable --now $@" "Disabling service: $1" ; fi ; setexitstatus ; set --;}
+system_service_disable() { if system_service_exists ; then execute "systemctl disable --now $1" "Disabling service: $1" ; fi ; setexitstatus ; set --;}
 
-test_pkg() { devnull rpm -q $1 && printf_success "$1 is installed" && return 1 || return 0 ; setexitstatus ; set -- ;}
+test_pkg() { devnull rpm -q $1 && printf_blue "$1 is installed" && return 1 || return 0 ; setexitstatus ; set -- ;}
 remove_pkg() { if ! test_pkg "$1" ; then execute "yum remove -q -y $1" "Removing: $1" ; fi ; setexitstatus ; set -- ;}
 install_pkg() { if test_pkg "$1" ; then execute "yum install -q -y --skip-broken install $1" "Installing: $1" ; fi ; setexitstatus ; set --  ;}
 
 detect_selinux() { selinuxenabled; if [ $? -ne 0 ]; then return 0; else return 1 ; fi ;}
 disable_selinux() { selinuxenabled; devnull setenforce 0 ;}
 
-grab_remote_file() { urlverify "$1" && curl -sSLq "$@" || exit 1 ;}
+grab_remote_file() { urlverify "$1" && curl -sSLq "$*" || exit 1 ;}
 run_external() { printf_green "Executing $*" devnull "$*" ;}
 retrieve_version_file() { grab_remote_file https://github.com/casjay-base/centos/raw/master/version.txt | head -n1 || echo "Unknown version" ;}
-for_loop() { loop="$1"; shift 1 ; for loop in "$loop"; do "$@" ; done ;}
-run_grub() { printf_green "Setting up grub"; rm -Rf /boot/*rescue* ; grub2-mkconfig -o /boot/grub2/grub.cfg ;}
+for_loop() { loop="$1"; shift 1 ; for loop in "$loop"; do "$*" ; done ;}
+run_grub() { printf_green "Setting up grub"; rm -Rf /boot/*rescue* ; devnull grub2-mkconfig -o /boot/grub2/grub.cfg ;}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -103,7 +103,7 @@ for_loop "$(echo cronie-anacron sendmail sendmail-cf)" rpm -ev --nodeps $loop
 
 run_external rm -Rf /root/anaconda-ks.cfg /var/log/anaconda
 run_external rm -Rf /etc/yum.repos.d/*
-grab_remote_file curl -sSL https://rpm-devel.sourceforge.io/ZREPO/RHEL/7/casjay.repo -o /etc/yum.repos.d/casjay.repo
+grab_remote_file https://rpm-devel.sourceforge.io/ZREPO/RHEL/7/casjay.repo -o /etc/yum.repos.d/casjay.repo
 
 run_external yum clean all && yum update -q -y --skip-broken
 run_grub
