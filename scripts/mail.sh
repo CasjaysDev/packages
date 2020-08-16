@@ -319,9 +319,6 @@ install_pkg irqbalance
 install_pkg kbd
 install_pkg kbd-legacy
 install_pkg kbd-misc
-install_pkg kernel-ml
-install_pkg kernel-ml-headers
-install_pkg kernel-ml-tools
 install_pkg kexec-tools
 install_pkg keyutils-libs
 install_pkg keyutils-libs-devel
