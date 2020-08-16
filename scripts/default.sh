@@ -55,8 +55,8 @@ run_grub() { printf_green "Setting up grub"; rm -Rf /boot/*rescue* ; devnull gru
 
 [ ! -z "$1" ] && printf_exit 'To many options provided'
 if [ -f /etc/casjaysdev/updates/versions/configs.txt ]; then
-print_red "This has already been installed"
-print_red "To reinstall please remove the version file in"
+printf_red "This has already been installed"
+printf_red "To reinstall please remove the version file in"
 printf_exit "/etc/casjaysdev/updates/versions/configs.txt"
 fi
 
