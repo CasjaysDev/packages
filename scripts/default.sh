@@ -47,7 +47,7 @@ detect_selinux() { selinuxenabled; if [ $? -ne 0 ]; then return 0; else return 1
 disable_selinux() { selinuxenabled; devnull setenforce 0 ;}
 
 grab_remote_file() { urlverify "$1" && curl -sSLq "$@" || exit 1 ;}
-run_external() { printf_green "Executing $@" devnull "$@" ;}
+run_external() { printf_green "Executing $*" devnull "$*" ;}
 retrieve_version_file() { grab_remote_file https://github.com/casjay-base/centos/raw/master/version.txt | head -n1 || echo "Unknown version" ;}
 for_loop() { loop="$1"; shift 1 ; for loop in "$loop"; do "$@" ; done ;}
 run_grub() { printf_green "Setting up grub"; rm -Rf /boot/*rescue* ; grub2-mkconfig -o /boot/grub2/grub.cfg ;}
