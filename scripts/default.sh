@@ -810,30 +810,32 @@ rm -Rf /etc/named* /var/named/* /etc/ntp* /etc/cron*/0* /etc/cron*/dailyjobs /va
 printf_head "setting up config files"
 ##################################################################################################################
 
-git clone -q https://github.com/phpsysinfo/phpsysinfo /var/www/html/sysinfo
-git clone -q https://github.com/casjay-base/centos /tmp/configs
+devnull git clone -q https://github.com/phpsysinfo/phpsysinfo /var/www/html/sysinfo
+devnull git clone -q https://github.com/casjay-base/centos /tmp/configs
 
-find /tmp/configs -type f -iname "*.sh" -exec chmod 755 {} \;
-find /tmp/configs -type f -iname "*.pl" -exec chmod 755 {} \;
-find /tmp/configs -type f -iname "*.cgi" -exec chmod 755 {} \;
-find /tmp/configs -type f -exec sed -i "s#myserverdomainname#$(hostname -f)#g" {} \;
-find /tmp/configs -type f -exec sed -i "s#myhostnameshort#$(hostname -s)#g" {} \;
-find /tmp/configs -type f -exec sed -i "s#mydomainname#$(hostname -f | awk -F. '{$1="";OFS="." ; print $0}' | sed 's/^.//')#g" {} \;
+devnull find /tmp/configs -type f -iname "*.sh" -exec chmod 755 {} \;
+devnull find /tmp/configs -type f -iname "*.pl" -exec chmod 755 {} \;
+devnull find /tmp/configs -type f -iname "*.cgi" -exec chmod 755 {} \;
+devnull find /tmp/configs -type f -exec sed -i "s#myserverdomainname#$(hostname -f)#g" {} \;
+devnull find /tmp/configs -type f -exec sed -i "s#myhostnameshort#$(hostname -s)#g" {} \;
+devnull find /tmp/configs -type f -exec sed -i "s#mydomainname#$(hostname -f | awk -F. '{$1="";OFS="." ; print $0}' | sed 's/^.//')#g" {} \;
 
-#rm -Rf /tmp/configs/etc/{fail2ban,shorewall,shorewall6}
-cp -Rf /tmp/configs/{etc,root,usr,var}* /
+devnull #rm -Rf /tmp/configs/etc/{fail2ban,shorewall,shorewall6}
+devnull cp -Rf /tmp/configs/{etc,root,usr,var}* /
 
-mkdir -p /etc/rsync.d /var/log/named && chown -Rf named:named /etc/named* /var/named /var/log/named
-chown -Rf apache:apache /var/www /usr/share/httpd
+devnull mkdir -p /etc/rsync.d /var/log/named && 
+devnull chown -Rf named:named /etc/named* /var/named /var/log/named
+devnull chown -Rf apache:apache /var/www /usr/share/httpd
 
-sed -i "s#myserverdomainname#$(echo $HOSTNAME)#g" /etc/sysconfig/network
-sed -i "s#mydomain#$(echo $HOSTNAME | awk -F. '{$1="";OFS="." ; print $0}' | sed 's/^.//')#g" /etc/sysconfig/network
-domainname $(hostname -f | awk -F. '{$1="";OFS="." ; print $0}' | sed 's/^.//') && echo "kernel.domainname=$(domainname)" >>/etc/sysctl.conf
+devnull sed -i "s#myserverdomainname#$(echo $HOSTNAME)#g" /etc/sysconfig/network
+devnull sed -i "s#mydomain#$(echo $HOSTNAME | awk -F. '{$1="";OFS="." ; print $0}' | sed 's/^.//')#g" /etc/sysconfig/network
+devnull domainname $(hostname -f | awk -F. '{$1="";OFS="." ; print $0}' | sed 's/^.//') && 
+echo "kernel.domainname=$(domainname)" >>/etc/sysctl.conf
 
-chmod 644 -Rf /etc/cron.d/* /etc/logrotate.d/*
-touch /etc/postfix/mydomains.pcre
-postmap /etc/postfix/transport /etc/postfix/canonical /etc/postfix/virtual /etc/postfix/mydomains && newaliases
-chattr +i /etc/resolv.conf
+devnull chmod 644 -Rf /etc/cron.d/* /etc/logrotate.d/*
+devnull touch /etc/postfix/mydomains.pcre
+devnull postmap /etc/postfix/transport /etc/postfix/canonical /etc/postfix/virtual /etc/postfix/mydomains && newaliases
+devnull chattr +i /etc/resolv.conf
 
 ##################################################################################################################
 printf_head "Enabling services"
@@ -891,11 +893,10 @@ update-ca-trust && update-ca-trust extract
 bash -c "$(munin-node-configure --remove-also --shell >/dev/null 2>&1)"
 
 if [ -f /var/lib/tor/hidden_service/hostname ]; then 
-cp -Rfv /var/lib/tor/hidden_service/hostname /var/www/html/tor_hostname
+cp -Rf /var/lib/tor/hidden_service/hostname /var/www/html/tor_hostname
 fi
 
 chown -Rf apache:apache /var/www
-systemctl restart munin-node
 history -c && history -w
 
 ##################################################################################################################
