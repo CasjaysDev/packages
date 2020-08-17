@@ -821,7 +821,6 @@ printf_head "Disabling services"
 
 system_service_disable firewalld
 system_service_disable chrony
-system_service_disable auditd
 system_service_disable kdump
 system_service_disable iscsid.socket
 system_service_disable iscsi 
