@@ -858,26 +858,6 @@ devnull postmap /etc/postfix/transport /etc/postfix/canonical /etc/postfix/virtu
 devnull chattr +i /etc/resolv.conf
 
 ##################################################################################################################
-printf_head "Enabling services"
-##################################################################################################################
-
-system_service_enable sshd
-system_service_enable tor
-system_service_enable munin-node
-system_service_enable cockpit
-system_service_enable postfix
-system_service_enable uptimed
-system_service_enable php-fpm
-system_service_enable proftpd
-system_service_enable rsyslog
-system_service_enable ntpd
-system_service_enable snmpd
-system_service_enable cockpit.socket
-system_service_enable named
-system_service_enable httpd
-system_service_enable php-fpm
-
-##################################################################################################################
 printf_head "Disabling services"
 ##################################################################################################################
 
@@ -897,6 +877,26 @@ system_service_disable shorewall6
 system_service_disable dhcpd
 system_service_disable dhcpd6
 system_service_disable radvd
+
+##################################################################################################################
+printf_head "Enabling services"
+##################################################################################################################
+
+system_service_enable sshd
+system_service_enable tor
+system_service_enable munin-node
+system_service_enable cockpit
+system_service_enable postfix
+system_service_enable uptimed
+system_service_enable php-fpm
+system_service_enable proftpd
+system_service_enable rsyslog
+system_service_enable ntpd
+system_service_enable snmpd
+system_service_enable cockpit.socket
+system_service_enable named
+system_service_enable httpd
+system_service_enable php-fpm
 
 ##################################################################################################################
 printf_head "Cleaning up"
