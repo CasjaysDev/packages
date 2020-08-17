@@ -37,8 +37,8 @@ fi
 run_post() { local e="$1" ; local m="$(echo $1 | sed 's#devnull ##g')" ; execute "$e" "executing: $m" ; setexitstatus ; set -- ;}
 
 system_service_exists() { if systemctl status "$1" >/dev/null 2>&1; then return 0 ; else return 1 ; fi ; setexitstatus ; set -- ;}
-system_service_enable() { if system_service_exists "$1" ; then execute "systemctl enable --now -f $1" "Enabling service: $1" ; fi ; setexitstatus ; set -- ;}
-system_service_disable() { if system_service_exists "$1" ; then execute "systemctl disable --now $1" "Disabling service: $1" ; fi ; setexitstatus ; set --;}
+system_service_enable() { if system_service_exists "$1" && systemctl status "$1" | grep -Fq enabled; then execute "systemctl enable --now -f $1" "Enabling service: $1" ; fi ; setexitstatus ; set -- ;}
+system_service_disable() { if system_service_exists "$1" && systemctl status "$1" | grep -Fq disabled; then execute "systemctl disable --now $1" "Disabling service: $1" ; fi ; setexitstatus ; set --;}
 
 test_pkg() { devnull rpm -q $1 && printf_blue "$1 is installed" && return 1 || return 0 ; setexitstatus ; set -- ;}
 remove_pkg() { if ! test_pkg "$1" ; then execute "yum remove -q -y $@" "Removing: $@" ; fi ; setexitstatus ; set -- ;}
