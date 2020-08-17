@@ -845,6 +845,27 @@ devnull postmap /etc/postfix/transport /etc/postfix/canonical /etc/postfix/virtu
 devnull chattr +i /etc/resolv.conf
 
 ##################################################################################################################
+printf_head "Disabling services"
+##################################################################################################################
+
+system_service_disable firewalld
+system_service_disable chrony
+system_service_disable kdump
+system_service_disable iscsid.socket
+system_service_disable iscsi 
+system_service_disable iscsiuio.socket
+system_service_disable lvm2-lvmetad.socket
+system_service_disable lvm2-lvmpolld.socket
+system_service_disable lvm2-monitor
+system_service_disable mdmonitor
+system_service_disable fail2ban
+system_service_disable shorewall
+system_service_disable shorewall6
+system_service_disable dhcpd
+system_service_disable dhcpd6
+system_service_disable radvd
+
+##################################################################################################################
 printf_head "Enabling services"
 ##################################################################################################################
 
@@ -861,28 +882,6 @@ system_service_enable ntpd
 system_service_enable snmpd
 system_service_enable cockpit.socket
 system_service_enable named
-
-##################################################################################################################
-printf_head "Disabling services"
-##################################################################################################################
-
-system_service_disable firewalld
-system_service_disable chrony
-system_service_disable auditd
-system_service_disable kdump
-system_service_disable iscsid.socket
-system_service_disable iscsi 
-system_service_disable iscsiuio.socket
-system_service_disable lvm2-lvmetad.socket
-system_service_disable lvm2-lvmpolld.socket
-system_service_disable lvm2-monitor
-system_service_disable mdmonitor
-system_service_disable fail2ban
-system_service_disable shorewall
-system_service_disable shorewall6
-system_service_disable dhcpd
-system_service_disable dhcpd6
-system_service_disable radvd
 
 ##################################################################################################################
 printf_head "Cleaning up"
