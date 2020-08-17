@@ -847,17 +847,41 @@ devnull chattr +i /etc/resolv.conf
 printf_head "Enabling services"
 ##################################################################################################################
 
-for s in $(echo sshd tor munin-node cockpit postfix uptimed php-fpm proftpd rsyslog ntpd snmpd cockpit.socket named); do 
-system_service_enable $s
-done
+system_service_enable sshd
+system_service_enable tor
+system_service_enable munin-node
+system_service_enable cockpit
+system_service_enable postfix
+system_service_enable uptimed
+system_service_enable php-fpm
+system_service_enable proftpd
+system_service_enable rsyslog
+system_service_enable ntpd
+system_service_enable snmpd
+system_service_enable cockpit.socket
+system_service_enable named
 
 ##################################################################################################################
 printf_head "Disabling services"
 ##################################################################################################################
 
-for s in $(echo firewalld chrony auditd kdump iscsid.socket iscsi iscsiuio.socket lvm2-lvmetad.socket lvm2-lvmpolld.socket lvm2-monitor mdmonitor fail2ban shorewall shorewall6 dhcpd dhcpd6 radvd); do 
-system_service_disable $s
-done
+system_service_disable firewalld
+system_service_disable chrony
+system_service_disable auditd
+system_service_disable kdump
+system_service_disable iscsid.socket
+system_service_disable iscsi 
+system_service_disable iscsiuio.socket
+system_service_disable lvm2-lvmetad.socket
+system_service_disable lvm2-lvmpolld.socket
+system_service_disable lvm2-monitor
+system_service_disable mdmonitor
+system_service_disable fail2ban
+system_service_disable shorewall
+system_service_disable shorewall6
+system_service_disable dhcpd
+system_service_disable dhcpd6
+system_service_disable radvd
 
 ##################################################################################################################
 printf_head "Cleaning up"
