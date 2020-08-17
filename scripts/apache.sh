@@ -944,8 +944,8 @@ history -c && history -w
 ##################################################################################################################
 
 mkdir -p /etc/casjaysdev/updates/versions
-echo "$VERSION" > /etc/casjaysdev/updates/versions/configs.txt
-chmod -Rf 664 /etc/casjaysdev/updates/versions/configs.txt
+echo "$VERSION" > /etc/casjaysdev/updates/versions/mail.txt
+chmod -Rf 664 /etc/casjaysdev/updates/versions/mail.txt
 
 ##################################################################################################################
 printf_head "Finished " ; echo""
