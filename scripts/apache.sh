@@ -946,6 +946,7 @@ history -c && history -w
 mkdir -p /etc/casjaysdev/updates/versions
 echo "$VERSION" > /etc/casjaysdev/updates/versions/mail.txt
 chmod -Rf 664 /etc/casjaysdev/updates/versions/mail.txt
+touch /etc/casjaysdev/updates/versions/default.txt 
 
 ##################################################################################################################
 printf_head "Finished " ; echo""
