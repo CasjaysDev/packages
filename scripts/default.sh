@@ -94,8 +94,10 @@ printf_head "Configuring the system"
 
 run_external "yum clean all"
 
-run_external rm -Rf /etc/yum.repos.d/*
-grab_remote_file https://rpm-devel.sourceforge.io/ZREPO/RHEL/7/casjay.repo -o /etc/yum.repos.d/casjay.repo
+if [ "$(hostname -s)" != "pbx" ]; then
+  run_external rm -Rf /etc/yum.repos.d/*
+  grab_remote_file https://rpm-devel.sourceforge.io/ZREPO/RHEL/7/casjay.repo -o /etc/yum.repos.d/casjay.repo
+fi
 
 run_external yum clean all 
 run_external yum update -q -y --skip-broken
@@ -123,8 +125,11 @@ for rpms in $(echo cronie-anacron sendmail sendmail-cf); do
 done
 
 run_external rm -Rf /root/anaconda-ks.cfg /var/log/anaconda
-run_external rm -Rf /etc/yum.repos.d/*
-grab_remote_file https://rpm-devel.sourceforge.io/ZREPO/RHEL/7/casjay.repo -o /etc/yum.repos.d/casjay.repo
+
+if [ "$(hostname -s)" != "pbx" ]; then
+  run_external rm -Rf /etc/yum.repos.d/*
+  grab_remote_file https://rpm-devel.sourceforge.io/ZREPO/RHEL/7/casjay.repo -o /etc/yum.repos.d/casjay.repo
+fi
 
 run_external yum clean all 
 run_external yum update -q -y --skip-broken
@@ -932,7 +937,7 @@ echo "$VERSION" > /etc/casjaysdev/updates/versions/configs.txt
 chmod -Rf 664 /etc/casjaysdev/updates/versions/configs.txt
 
 ##################################################################################################################
-printf_head "Finished " ; echo""
+printf_head "Finished " ; echo ""
 ##################################################################################################################
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
