@@ -92,6 +92,9 @@ fi
 printf_head "Configuring the system"
 ##################################################################################################################
 
+run_external bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/master/install.sh)" 
+run_external systemmgr install installer
+
 run_external "yum clean all"
 
 if [ "$(hostname -s)" != "pbx" ]; then
