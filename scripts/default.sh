@@ -92,7 +92,9 @@ fi
 printf_head "Configuring the system"
 ##################################################################################################################
 
-run_external bash -c "$(curl -LSs https://github.com/systemmgr/installer/raw/master/install.sh)" 
+grab_remote_file curl -LSs https://github.com/systemmgr/installer/raw/master/install.sh -o /tmp/scripts-install.sh 
+chmod 755 /tmp/scripts-install.sh
+run_external /tmp/scripts-install.sh
 run_external systemmgr install installer
 
 run_external "yum clean all"
